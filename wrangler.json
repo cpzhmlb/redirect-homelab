@@ -1,8 +1,11 @@
 {
-  "name": "rdrhomelab",
+  "name": "redirect-homelab",
   "compatibility_date": "2025-08-31",
-  "pages_build_output_dir": "./dist",
+  "main": "worker.js",
   "build": {
     "command": "npm run build"
+  },
+  "site": {
+    "bucket": "./dist"
   }
 }
