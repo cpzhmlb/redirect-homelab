@@ -1,0 +1,66 @@
+{
+  "public": [
+    {
+      "href": "chat.cpzhmlb.lat",
+      "icon": "/images/chatgpt.svg",
+      "name": "ChatGPT"
+    },
+    {
+      "href": "https://immich.cpzhmlb.lat",
+      "icon": "/images/immich.svg",
+      "name": "Immich"
+    },
+    {
+      "href": "https://jellyfin.cpzhmlb.lat",
+      "icon": "/images/jellyfin.svg",
+      "name": "Jellyfin"
+    },
+    {
+      "href": "https://request.cpzhmlb.lat",
+      "icon": "/images/jellyseerr.svg",
+      "name": "Jellyseerr"
+    },
+    {
+      "href": "https://vault.cpzhmlb.lat",
+      "icon": "/images/vaultwarden.svg",
+      "name": "Vaultwarden"
+    }
+  ],
+  "private": [
+    {
+      "href": "https://bazarr.cpzhmlb.lat",
+      "icon": "/images/bazarr.svg",
+      "name": "Bazarr"
+    },
+    {
+      "href": "https://lidarr.cpzhmlb.lat",
+      "icon": "/images/lidarr.svg",
+      "name": "Lidarr"
+    },
+    {
+        "href": "https://llm.cpzhmlb.lat",
+        "icon": "/images/litellm.svg",
+        "name": "Lite LLM"
+    },
+    {
+      "href": "https://prowlarr.cpzhmlb.lat",
+      "icon": "/images/prowlarr.svg",
+      "name": "Prowlarr"
+    },
+    {
+      "href": "https://qbit.cpzhmlb.lat",
+      "icon": "/images/qbittorrent.svg",
+      "name": "qBittorrent"
+    },
+    {
+      "href": "https://radarr.cpzhmlb.lat",
+      "icon": "/images/radarr.svg",
+      "name": "Radarr"
+    },
+    {
+      "href": "https://sonarr.cpzhmlb.lat",
+      "icon": "/images/sonarr.svg",
+      "name": "Sonarr"
+    }
+  ]
+}

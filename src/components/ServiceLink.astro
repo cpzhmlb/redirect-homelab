@@ -1,0 +1,103 @@
+---
+interface Props {
+  href: string;
+  icon: string;
+  name: string;
+}
+
+const { href, icon, name } = Astro.props;
+---
+
+<a class="service-link" target="_blank" href={href}>
+  <div class="service-link-content">
+    <img class="service-icon" src={icon} alt={name} />
+    {name}
+  </div>
+</a>
+
+<style>
+  /* Modern service tile using project design tokens */
+  .service-link {
+    display: flex;
+    align-items: center;
+    gap: var(--gap, 16px);
+    background: linear-gradient(
+      135deg,
+      rgba(88, 164, 176, 0.08),
+      rgba(218, 164, 154, 0.04)
+    );
+    padding: 14px 16px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--charcoal);
+    transition:
+      transform 180ms ease,
+      box-shadow 180ms ease,
+      border-color 180ms ease;
+    box-shadow: 0 6px 18px rgba(55, 63, 81, 0.08);
+    border: 1px solid rgba(55, 63, 81, 0.05);
+  }
+
+  .service-link:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 36px rgba(55, 63, 81, 0.12);
+    border-color: rgba(55, 63, 81, 0.08);
+  }
+
+  .service-link:active {
+    transform: translateY(-2px) scale(0.995);
+  }
+
+  .service-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 10px;
+    padding: 6px;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.9),
+      rgba(255, 255, 255, 0.8)
+    );
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 6px 16px rgba(55, 63, 81, 0.06);
+    overflow: hidden;
+    object-fit: contain;
+  }
+
+  .service-icon[src] {
+    display: block;
+  }
+
+  .service-icon {
+    /* ensure svg/raster scale nicely */
+    width: 56px;
+    height: 56px;
+  }
+
+  .service-link-content {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--charcoal);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .service-meta {
+    font-weight: 600;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .service-link,
+    .service-link:hover,
+    .service-link:active {
+      transition: none;
+      transform: none;
+    }
+  }
+</style>

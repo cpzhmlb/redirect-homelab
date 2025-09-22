@@ -1,0 +1,28 @@
+{
+  "name": "redirect-homelab",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/camilopaezz/redirect-homelab.git"
+  },
+  "keywords": [],
+  "author": "Camilo Paez <camilopaez.dev@gmail.com>",
+  "license": "MIT",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/camilopaezz/redirect-homelab/issues"
+  },
+  "homepage": "https://github.com/camilopaezz/redirect-homelab#readme",
+  "dependencies": {
+    "astro": "^5.13.9"
+  }
+}
