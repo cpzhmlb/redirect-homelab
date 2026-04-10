@@ -1,7 +1,12 @@
 ---
 import "../styles/style.css";
 import ServiceLink from "../components/ServiceLink.astro";
+import LiquidSelect from "../components/LiquidSelect.astro";
 import services from "../data/services.json";
+
+const currentNetwork = typeof localStorage !== 'undefined' 
+  ? localStorage.getItem('useNetwork') || 'public' 
+  : 'public';
 ---
 
 <html lang="en">
@@ -22,15 +27,9 @@ import services from "../data/services.json";
         style="display:flex;align-items:center;justify-content:space-between;gap:12px;"
       >
         <h1 class="header">Redirect Homelab</h1>
-        <button
-          class="theme-toggle"
-          id="themeToggle"
-          aria-label="Toggle theme"
-          title="Toggle theme"
-        >
-          <!-- icon replaced dynamically by script -->
-          <span id="themeIcon">🌙</span>
-        </button>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <LiquidSelect currentNetwork={currentNetwork} client:load />
+        </div>
       </header>
 
       <section class="card">
@@ -51,9 +50,7 @@ import services from "../data/services.json";
     </div>
 
     <style>
-      /* Page-level tweaks that work with the global design system */
       .app-container {
-        /* container sizing is handled globally, remove extra padding here */
         padding: 0;
       }
 
@@ -66,13 +63,11 @@ import services from "../data/services.json";
       }
 
       .services-list {
-        /* prefer the global grid but keep a sensible gap for tighter layouts */
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
         gap: 16px;
       }
 
-      /* slightly distinguish public vs private groups if needed */
       .public-services-list {
         margin-top: 6px;
       }
@@ -80,60 +75,9 @@ import services from "../data/services.json";
         margin-top: 6px;
       }
 
-      /* small footer area (styled in global CSS) */
       .app-footer {
         margin-top: 8px;
       }
     </style>
-
-    <script>
-      (function () {
-        const root = document.documentElement;
-        const KEY = "theme";
-        const stored = localStorage.getItem(KEY);
-        const prefersDark =
-          window.matchMedia &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-        function applyTheme(name) {
-          if (name === "dark") {
-            root.setAttribute("data-theme", "dark");
-          } else {
-            root.removeAttribute("data-theme");
-          }
-        }
-
-        function currentTheme() {
-          return root.getAttribute("data-theme") === "dark" ? "dark" : "light";
-        }
-
-        function updateToggleIcon(theme) {
-          const icon = document.getElementById("themeIcon");
-          if (icon) {
-            icon.textContent = theme === "dark" ? "☀️" : "🌙";
-          }
-        }
-
-        function toggleTheme() {
-          const now = currentTheme() === "dark" ? "light" : "dark";
-          applyTheme(now);
-          localStorage.setItem(KEY, now);
-          updateToggleIcon(now);
-        }
-
-        // Initialize theme immediately (before DOM fully ready)
-        const initialTheme = stored || (prefersDark ? "dark" : "light");
-        applyTheme(initialTheme);
-
-        // Since script is at end of body, DOM is ready - add listener directly
-        const btn = document.getElementById("themeToggle");
-        if (btn) {
-          btn.addEventListener("click", toggleTheme);
-        }
-
-        // Update icon after a short delay to ensure element exists
-        setTimeout(() => updateToggleIcon(currentTheme()), 0);
-      })();
-    </script>
   </body>
 </html>

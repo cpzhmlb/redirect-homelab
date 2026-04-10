@@ -1,27 +1,16 @@
 {
+  "localIp": "http://192.168.1.91",
+  "tailscaleIp": "http://homelab.dohne-cirius.ts.net",
   "public": [
     {
-      "href": "https://chat.cpzhmlb.lat",
-      "icon": "/images/chatgpt.svg",
-      "name": "ChatGPT"
-    },
-    {
-      "href": "https://immich.cpzhmlb.lat",
-      "icon": "/images/immich.svg",
-      "name": "Immich"
-    },
-    {
       "href": "https://jellyfin.cpzhmlb.lat",
+      "port": 8096,
       "icon": "/images/jellyfin.svg",
       "name": "Jellyfin"
     },
     {
-      "href": "https://request.cpzhmlb.lat",
-      "icon": "/images/jellyseerr.svg",
-      "name": "Jellyseerr"
-    },
-    {
       "href": "https://vault.cpzhmlb.lat",
+      "port": 8082,
       "icon": "/images/vaultwarden.svg",
       "name": "Vaultwarden"
     }
@@ -29,36 +18,31 @@
   "private": [
     {
       "href": "https://bazarr.cpzhmlb.lat",
+      "port": 6767,
       "icon": "/images/bazarr.svg",
       "name": "Bazarr"
     },
     {
-      "href": "https://lidarr.cpzhmlb.lat",
-      "icon": "/images/lidarr.svg",
-      "name": "Lidarr"
-    },
-    {
-      "href": "https://llm.cpzhmlb.lat",
-      "icon": "/images/litellm.svg",
-      "name": "Lite LLM"
-    },
-    {
       "href": "https://prowlarr.cpzhmlb.lat",
+      "port": 9696,
       "icon": "/images/prowlarr.svg",
       "name": "Prowlarr"
     },
     {
       "href": "https://qbit.cpzhmlb.lat",
+      "port": 8069,
       "icon": "/images/qbittorrent.svg",
       "name": "qBittorrent"
     },
     {
       "href": "https://radarr.cpzhmlb.lat",
+      "port": 7878,
       "icon": "/images/radarr.svg",
       "name": "Radarr"
     },
     {
       "href": "https://sonarr.cpzhmlb.lat",
+      "port": 8989,
       "icon": "/images/sonarr.svg",
       "name": "Sonarr"
     }

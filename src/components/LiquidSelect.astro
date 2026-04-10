@@ -1,0 +1,407 @@
+---
+export interface Props {
+  currentNetwork: string;
+}
+
+const { currentNetwork } = Astro.props;
+
+const options = [
+  { value: 'public', label: 'Public', icon: '🌐' },
+  { value: 'local', label: 'Local', icon: '🏠' },
+  { value: 'tailscale', label: 'Tailscale', icon: '🔒' },
+];
+---
+
+<div class="liquid-select" id="liquidNetworkSelect">
+  <button class="liquid-trigger" id="liquidTrigger" aria-haspopup="listbox" aria-expanded="false">
+    <span class="liquid-icon" id="liquidIcon">{options.find(o => o.value === currentNetwork)?.icon || '🌐'}</span>
+    <span class="liquid-label" id="liquidLabel">{options.find(o => o.value === currentNetwork)?.label || 'Public'}</span>
+    <span class="liquid-caret">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
+  </button>
+
+  <div class="liquid-backdrop" id="liquidBackdrop"></div>
+  
+  <ul class="liquid-menu" role="listbox" id="liquidMenu">
+    {options.map((option) => (
+      <li 
+        class="liquid-option" 
+        role="option" 
+        data-value={option.value}
+        aria-selected={option.value === currentNetwork}
+      >
+        <span class="option-icon">{option.icon}</span>
+        <span class="option-label">{option.label}</span>
+        <span class="option-check">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  :root {
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
+    --spring-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .liquid-select {
+    position: relative;
+    display: inline-block;
+  }
+
+  .liquid-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 59, 48, 0.15);
+    background: rgba(255, 59, 48, 0.03);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    color: #fff8f6;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 
+      background 400ms var(--ease-out-expo),
+      border-color 400ms var(--ease-out-expo),
+      box-shadow 400ms var(--ease-out-expo),
+      transform 400ms var(--spring-bounce);
+    box-shadow: 
+      0 0 0 1px rgba(255, 59, 48, 0.08) inset,
+      0 4px 16px rgba(0, 0, 0, 0.3),
+      0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  .liquid-trigger:hover {
+    background: rgba(255, 59, 48, 0.08);
+    border-color: rgba(255, 59, 48, 0.25);
+    box-shadow: 
+      0 0 0 1px rgba(255, 59, 48, 0.15) inset,
+      0 8px 32px rgba(255, 59, 48, 0.15),
+      0 4px 16px rgba(0, 0, 0, 0.4);
+    transform: translateY(-2px);
+  }
+
+  .liquid-trigger:active {
+    transform: translateY(0) scale(0.98);
+    transition-duration: 100ms;
+  }
+
+  .liquid-trigger[aria-expanded="true"] {
+    background: rgba(255, 59, 48, 0.1);
+    border-color: rgba(255, 59, 48, 0.3);
+  }
+
+  .liquid-icon {
+    font-size: 1.1rem;
+    filter: drop-shadow(0 0 4px rgba(255, 59, 48, 0.5));
+    transition: transform 400ms var(--spring-bounce);
+  }
+
+  .liquid-label {
+    color: rgba(255, 248, 246, 0.95);
+    text-shadow: 0 0 12px rgba(255, 59, 48, 0.4);
+    transition: transform 300ms var(--ease-out-expo);
+  }
+
+  .liquid-caret {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 59, 48, 0.7);
+    transition: transform 500ms var(--ease-out-expo);
+  }
+
+  .liquid-trigger[aria-expanded="true"] .liquid-caret {
+    transform: rotate(180deg);
+  }
+
+  .liquid-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    opacity: 0;
+    visibility: hidden;
+    transition: 
+      opacity 400ms var(--ease-out-expo),
+      visibility 400ms;
+    z-index: 998;
+  }
+
+  .liquid-backdrop.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .liquid-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 12px);
+    min-width: 200px;
+    padding: 8px;
+    margin: 0;
+    list-style: none;
+    border-radius: 20px;
+    background: rgba(30, 15, 15, 0.75);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border: 1px solid rgba(255, 59, 48, 0.12);
+    box-shadow: 
+      0 0 0 1px rgba(255, 59, 48, 0.06) inset,
+      0 25px 50px -12px rgba(0, 0, 0, 0.6),
+      0 0 80px -20px rgba(255, 59, 48, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-12px) scale(0.95);
+    transition: 
+      opacity 400ms var(--ease-out-expo),
+      visibility 400ms,
+      transform 500ms var(--spring-bounce);
+    z-index: 999;
+    overflow: hidden;
+  }
+
+  .liquid-menu.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+    transition: 
+      opacity 300ms var(--ease-out-expo),
+      visibility 300ms,
+      transform 400ms var(--spring-bounce);
+  }
+
+  .liquid-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: 
+      background 250ms var(--ease-out-expo),
+      transform 200ms var(--ease-out-expo);
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+
+  .liquid-menu.open .liquid-option {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .liquid-menu.open .liquid-option:nth-child(1) { transition-delay: 50ms; }
+  .liquid-menu.open .liquid-option:nth-child(2) { transition-delay: 100ms; }
+  .liquid-menu.open .liquid-option:nth-child(3) { transition-delay: 150ms; }
+
+  .liquid-option::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 59, 48, 0.15), rgba(255, 59, 48, 0.05));
+    opacity: 0;
+    transition: opacity 250ms var(--ease-out-expo);
+  }
+
+  .liquid-option:hover::before {
+    opacity: 1;
+  }
+
+  .liquid-option:active {
+    transform: scale(0.97);
+    transition-duration: 100ms;
+  }
+
+  .liquid-option[aria-selected="true"] {
+    background: rgba(255, 59, 48, 0.12);
+  }
+
+  .liquid-option[aria-selected="true"]::before {
+    opacity: 1;
+  }
+
+  .option-icon {
+    font-size: 1.2rem;
+    filter: drop-shadow(0 0 6px rgba(255, 59, 48, 0.4));
+    position: relative;
+    z-index: 1;
+    transition: transform 400ms var(--spring-bounce);
+  }
+
+  .liquid-option:hover .option-icon {
+    transform: scale(1.1);
+  }
+
+  .option-label {
+    flex: 1;
+    color: rgba(255, 248, 246, 0.9);
+    font-weight: 500;
+    font-size: 0.95rem;
+    position: relative;
+    z-index: 1;
+    transition: 
+      color 250ms var(--ease-out-expo),
+      text-shadow 250ms var(--ease-out-expo);
+  }
+
+  .liquid-option[aria-selected="true"] .option-label {
+    color: #fff;
+    text-shadow: 0 0 16px rgba(255, 59, 48, 0.6);
+  }
+
+  .option-check {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 59, 48, 0.9);
+    opacity: 0;
+    transform: scale(0.5) rotate(-45deg);
+    transition: 
+      opacity 350ms var(--ease-out-expo),
+      transform 400ms var(--spring-bounce);
+    position: relative;
+    z-index: 1;
+  }
+
+  .liquid-option[aria-selected="true"] .option-check {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    filter: drop-shadow(0 0 8px rgba(255, 59, 48, 0.6));
+  }
+
+  .liquid-option:hover .option-check {
+    opacity: 0.5;
+    transform: scale(0.85);
+  }
+
+  .liquid-option[aria-selected="true"]:hover .option-check {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  (function() {
+    const select = document.getElementById('liquidNetworkSelect');
+    const triggerEl = document.getElementById('liquidTrigger');
+    const menuEl = document.getElementById('liquidMenu');
+    const backdropEl = document.getElementById('liquidBackdrop');
+    const icon = document.getElementById('liquidIcon');
+    const label = document.getElementById('liquidLabel');
+
+    if (!select || !triggerEl || !menuEl || !backdropEl) return;
+
+    const trigger = triggerEl as HTMLButtonElement;
+    const menu = menuEl as HTMLElement;
+    const backdrop = backdropEl as HTMLElement;
+
+    const options = [
+      { value: 'public', label: 'Public', icon: '🌐' },
+      { value: 'local', label: 'Local', icon: '🏠' },
+      { value: 'tailscale', label: 'Tailscale', icon: '🔒' },
+    ];
+
+    function applyNetwork(mode: string) {
+      document.querySelectorAll('.service-link').forEach(link => {
+        const el = link as HTMLAnchorElement;
+        if (mode === 'local' && el.dataset.localUrl) {
+          el.href = el.dataset.localUrl;
+        } else if (mode === 'tailscale' && el.dataset.tailscaleUrl) {
+          el.href = el.dataset.tailscaleUrl;
+        } else if (el.dataset.publicUrl) {
+          el.href = el.dataset.publicUrl;
+        }
+      });
+
+      if (icon && label) {
+        const opt = options.find(o => o.value === mode);
+        if (opt) {
+          icon.textContent = opt.icon;
+          label.textContent = opt.label;
+        }
+      }
+    }
+
+    function openDropdown() {
+      menu.classList.add('open');
+      backdrop.classList.add('active');
+      trigger.setAttribute('aria-expanded', 'true');
+      positionMenu();
+    }
+
+    function closeDropdown() {
+      menu.classList.remove('open');
+      backdrop.classList.remove('active');
+      trigger.setAttribute('aria-expanded', 'false');
+    }
+
+    function positionMenu() {
+      const rect = trigger.getBoundingClientRect();
+      menu.style.right = '0';
+      menu.style.top = 'calc(100% + 12px)';
+      menu.style.left = 'auto';
+
+      if (rect.right + 220 > window.innerWidth) {
+        menu.style.right = 'auto';
+        menu.style.left = '0';
+      }
+
+      if (rect.bottom + 200 > window.innerHeight) {
+        menu.style.top = 'auto';
+        menu.style.bottom = 'calc(100% + 12px)';
+      }
+    }
+
+    function selectOption(value: string) {
+      menu.querySelectorAll('.liquid-option').forEach(opt => {
+        opt.setAttribute('aria-selected', opt.getAttribute('data-value') === value ? 'true' : 'false');
+      });
+      localStorage.setItem('useNetwork', value);
+      applyNetwork(value);
+      closeDropdown();
+    }
+
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = menu.classList.contains('open');
+      if (isOpen) closeDropdown();
+      else openDropdown();
+    });
+
+    menu.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      const option = target.closest('.liquid-option');
+      if (option) {
+        const value = option.getAttribute('data-value');
+        if (value) selectOption(value);
+      }
+    });
+
+    backdrop.addEventListener('click', closeDropdown);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeDropdown();
+    });
+
+    const current = localStorage.getItem('useNetwork') || 'public';
+    applyNetwork(current);
+    menu.querySelectorAll('.liquid-option').forEach(opt => {
+      opt.setAttribute('aria-selected', opt.getAttribute('data-value') === current ? 'true' : 'false');
+    });
+  })();
+</script>
